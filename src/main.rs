@@ -17,7 +17,7 @@ fn main() -> Result<(), Error> {
     let mut command = String::new();
     let mut project_name = String::new();
 
-    println!("Ingresa:\n cargo new parse \npara crear un nuevo proyecto backend Parse-Server");
+    println!("Ingresa:\n cargo new parse : para crear un nuevo proyecto backend Parse-Server\n cargo new express : para crear un nuevo proyecto express");
 
     io::stdin().read_line(&mut command)?;
     let command = command.trim();
