@@ -1,6 +1,4 @@
-use crate::parse::files::files_to_create::{
-    config_content, index_content, package_content, parse_server_content,
-};
+use super::content_files::{config_content, index_content, package_content, parse_server_content};
 
 use std::io::Error;
 use std::{fs::File, io::Write};
@@ -41,11 +39,12 @@ fn parse_server_ts(project_name: &str) -> Result<(), Error> {
     Ok(())
 }
 
-fn global_d_ts(project_name: &str) -> Result <()>, Error {
-    let content = "declare module 'parse-server';"
-    
-        let mut global_d_ts = File::create(format!("{}/src/global.d.ts", project_name))
-            parse_server_ts.write_all(content.as_bytes())?;
+fn global_d_ts(project_name: &str) -> Result<(), Error> {
+    let content = String::from("declare module 'parse-server';");
+
+    let mut global_d_ts = File::create(format!("{}/src/global.d.ts", project_name))?;
+    global_d_ts.write_all(content.as_bytes())?;
+
     Ok(())
 }
 
@@ -54,6 +53,7 @@ pub fn create_files(project_name: &str) -> Result<(), Error> {
     package_json(project_name)?;
     parse_server_ts(project_name)?;
     config_ts(project_name)?;
+    global_d_ts(project_name)?;
 
     Ok(())
 }

@@ -1,4 +1,4 @@
-use parse::files::files_to_create::parse_env;
+use parse::content_files::parse_env;
 use std::io;
 use std::io::Error;
 use std::{fs::File, io::Write};
