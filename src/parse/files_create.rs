@@ -72,7 +72,7 @@ fn nodemon_json(project_name: &str) -> Result<(), Error> {
 fn main_js(project_name: &str) -> Result<(), Error> {
     let content = main_content();
 
-    let mut main_js = File::create(format!("{}/clouds/main.js", project_name))?;
+    let mut main_js = File::create(format!("{}/cloud/main.js", project_name))?;
     main_js.write_all(content.as_bytes())?;
 
     Ok(())
@@ -82,7 +82,7 @@ fn index_routs_js(project_name: &str) -> Result<(), Error> {
     let content = routs_content();
 
     let mut routes_index_js =
-        File::create(format!("{}/clouds/routes/index.routes.js", project_name))?;
+        File::create(format!("{}/cloud/routes/index.routes.js", project_name))?;
     routes_index_js.write_all(content.as_bytes())?;
 
     Ok(())
@@ -91,7 +91,7 @@ fn index_routs_js(project_name: &str) -> Result<(), Error> {
 fn user_clouds_js (project_name: &str) -> Result <(), Error> {
     let content = user_clouds_content();
     
-    let mut user_clouds_js = File::create(format!("{}/clouds/modules/user/userClouds.js", project_name))?;
+    let mut user_clouds_js = File::create(format!("{}/cloud/modules/user/userClouds.js", project_name))?;
     
     user_clouds_js.write_all(content.as_bytes())?;    Ok(())
 }
@@ -99,7 +99,7 @@ fn user_clouds_js (project_name: &str) -> Result <(), Error> {
 fn user_controller_js(project_name: &str) -> Result<(),Error> {
     let content = user_controller_content();
     
-    let mut user_controller_js = File::create(format!("{}/clouds/modules/user/userControllers.js", project_name))?;
+    let mut user_controller_js = File::create(format!("{}/cloud/modules/user/userControllers.js", project_name))?;
     
 user_controller_js.write_all(content.as_bytes())?;
 
@@ -109,7 +109,7 @@ Ok(())
 fn user_service_js (project_name: &str) -> Result<(),Error> {
     let content = user_srvices_content();
     
-    let mut user_service_js = File::create(format!("{}/clouds/modules/user/userServices.js", project_name))?;
+    let mut user_service_js = File::create(format!("{}/cloud/modules/user/userServices.js", project_name))?;
     
     user_service_js.write_all(content.as_bytes())?;
     

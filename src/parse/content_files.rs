@@ -37,6 +37,10 @@ pub fn index_content() -> String {
         Parse.initialize(config.APPLICATION_ID, config.MASTER_KEY);
         Parse.serverURL = config.SERVER_URL;
         
+        app.use(express.json());
+        app.use(cors());
+        app.use(`/api`, parseServer.app);
+        
         
         export const httpServer = http.createServer(app)
         
