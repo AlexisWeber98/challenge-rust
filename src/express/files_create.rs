@@ -6,7 +6,7 @@ use std::{fs::File, io::Write};
 fn package_json(project_name: &str) -> Result<(), Error> {
     let content = package_content();
 
-    let mut package_json = File::create(format!("{}/package.json", project_name)).unwrap();
+    let mut package_json = File::create(format!("{}/package.json", project_name))?;
     package_json.write_all(content.as_bytes())?;
 
     Ok(())
@@ -15,7 +15,7 @@ fn package_json(project_name: &str) -> Result<(), Error> {
 fn index_ts(project_name: &str) -> Result<(), Error> {
     let content = index_content();
 
-    let mut index_ts = File::create(format!("{}/src/index.ts", project_name)).unwrap();
+    let mut index_ts = File::create(format!("{}/src/index.ts", project_name))?;
     index_ts.write_all(content.as_bytes())?;
 
     Ok(())
