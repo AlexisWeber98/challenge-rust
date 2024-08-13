@@ -27,7 +27,7 @@ pub fn express_selection(express_command: &str, project_name: &str) -> Result<()
 }
 
 pub fn create_env(command: &str, project_name: &str) -> Result<(), Error> {
-    let mut env = File::create(format!("../{}/.env", project_name)).unwrap();
+    let mut env = File::create(format!("{}/.env", project_name)).unwrap();
     let mut url = String::new();
     let mut port = String::new();
     let mut server_url = String::new();
