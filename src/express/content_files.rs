@@ -1,12 +1,16 @@
-pub fn env_content(url: &str, port: &str, server_url: &str) -> String {
-    let env = format!(
-        "DATABASE_URL = {}
-        HTTP_PORT = {}
-        SERVER_URL = {}",
-        url, port, server_url
-    );
+pub fn env_content(url: &str) -> String {
+    let database_url = if url.is_empty() {
+        String::from("# DATABASE_URL = mongodb://localhost:27017/mydb -- Opcional: descomente para conectar a MongoDB")
+    } else {
+        format!("DATABASE_URL = {}", url)
+    };
 
-    env
+    format!(
+        "{}
+        HTTP_PORT = 3001
+        SERVER_URL = http://localhost:3001",
+        database_url
+    )
 }
 
 pub fn index_content() -> String {
@@ -234,12 +238,16 @@ pub fn config_content() -> String {
 
         export default cleanEnv(process.env, {
          HTTP_PORT: num({
-            desc: 'Default port wher parse-server will run on',
-            default: 1337,
+            desc: 'Default port where the app will run on',
+            default: 3001,
          }),
         SERVER_URL: str({
-            desc: 'Referenece to your server URL. Replace this when your app is hosted',
-            devDefault: 'http://localhost:1337/server',
+            desc: 'Reference to your server URL. Replace this when your app is hosted',
+            devDefault: 'http://localhost:3001',
+         }),
+        DATABASE_URL: str({
+            desc: 'MongoDB connection URI. Optional for local development',
+            default: '',
          }),
         })
         ",

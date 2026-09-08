@@ -1,24 +1,18 @@
-pub fn parse_env(
-    url: &str,
-    app_id: &str,
-    master_key: &str,
-    port: &str,
-    server_url: &str,
-    project_name: &str,
-) -> String {
-    let env = format!(
-"DATABASE_URL = {}
-APPLICATION_ID = {}
-MASTER_KEY = {}
-HTTP_PORT = {}
-SERVER_URL = {}
-APP_NAME = {}
-CLOUD_PATH = './build/cloud/main.js'
-",
-        url, app_id, master_key, port, server_url, project_name
-    );
-
-    env
+pub fn parse_env(url: &str, project_name: &str) -> String {
+    format!(
+        r#"# MASTER_KEY y APPLICATION_ID son valores de desarrollo.
+# CAMBIELOS antes de desplegar a producción.
+DATABASE_URL = {url}
+APPLICATION_ID = {project_name}
+MASTER_KEY = supersecretkey
+HTTP_PORT = 1337
+SERVER_URL = http://localhost:1337/server
+APP_NAME = {project_name}
+CLOUD_PATH = './cloud/main.js'
+"#,
+        url = url,
+        project_name = project_name
+    )
 }
 
 pub fn index_content() -> String {
@@ -125,31 +119,36 @@ pub fn config_content() -> String {
         
         MASTER_KEY: str({
            desc: 'A secret key of your choice (keep this secret)',
+           default: 'supersecretkey',
          }),
          APPLICATION_ID: str({
            desc: 'An id for your app, can be anything you want',
-           default: 'APPLICATION_ID',
+           default: 'my-app-id',
          }),
          HTTP_PORT: num({
-            desc: 'Default port wher parse-server will run on',
+            desc: 'Default port where parse-server will run on',
             default: 1337,
          }),
         SERVER_URL: str({
-            desc: 'Referenece to your server URL. Replace this when your app is hosted',
+            desc: 'Reference to your server URL. Replace this when your app is hosted',
             devDefault: 'http://localhost:1337/server',
          }),
          DATABASE_URL: str({
-         desc: 'url database'
+         desc: 'MongoDB connection URI',
+         default: '',
          }),
          APP_NAME: str({
-             desc: 'app name'
+             desc: 'App name',
+             default: 'my-app',
          }),
          CLOUD_PATH: str({
-             desc: 'path cloud main'
+             desc: 'Path to cloud main.js',
+             default: './cloud/main.js',
          })
         })
         ",
     );
+
     config_ts
 }
 
@@ -239,7 +238,7 @@ pub fn main_content() -> String {
 }
 
 pub fn routs_content() -> String {
-    let  index_routes_js = String::from(
+    let index_routes_js = String::from(
         r#"
         const path = require('path');
         const fs = require('fs');
@@ -263,7 +262,8 @@ pub fn routs_content() -> String {
 }
 
 pub fn user_clouds_content() -> String {
-    let user_clouds_js = String::from(r#"
+    let user_clouds_js = String::from(
+        r#"
         import { createUserNewControllers, deleteUserControllers, getAllUsersControllers, getUserByIdControllers, updateUserControllers } from './userControllers';
         
         
@@ -271,13 +271,15 @@ pub fn user_clouds_content() -> String {
         Parse.Cloud.define('getUserById', getUserByIdControllers(Parse), { requireUser: true });
         Parse.Cloud.define('createUser', createUserNewControllers(Parse));
         Parse.Cloud.define('deleteUser', deleteUserControllers(Parse), { requireUser: true });
-        Parse.Cloud.define('updateUser', updateUserControllers(Parse), { requireUser: true });"#);
-    
+        Parse.Cloud.define('updateUser', updateUserControllers(Parse), { requireUser: true });"#,
+    );
+
     user_clouds_js
 }
 
 pub fn user_controller_content() -> String {
-    let user_controller_js = String::from (r#"
+    let user_controller_js = String::from(
+        r#"
         import { 
           createNewUserServices, 
           deleteUserServices, 
@@ -344,13 +346,15 @@ pub fn user_controller_content() -> String {
             return { message: 'User deleted successfully' };
           });
         }
-        "#);
-    
+        "#,
+    );
+
     user_controller_js
 }
 
 pub fn user_srvices_content() -> String {
-    let user_services_js = String::from(r#"
+    let user_services_js = String::from(
+        r#"
         const User = Parse.Object.extend('User');
         
         // Helper function to handle errors
@@ -443,6 +447,7 @@ pub fn user_srvices_content() -> String {
           await user.destroy({ useMasterKey: true });
         }
 
-        "#);
+        "#,
+    );
     user_services_js
 }
